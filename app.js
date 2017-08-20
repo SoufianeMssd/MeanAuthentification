@@ -11,7 +11,8 @@ const config = require('./configure/dataB');
 const port = 3000;
 
 //connect to database
-mongoose.connect(config.database);
+mongoose.Promise = global.Promise;
+mongoose.connect(config.database, { useMongoClient: true });
 
 //verification of the connection
 mongoose.connection.on('connected',() =>{
@@ -23,6 +24,15 @@ mongoose.connection.on('error',(err) =>{
     console.log('database error '+err);
 })
 
+//body parser middleware
+app.use(bodyParser.json());
+
+//passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./configure/passport')(passport);
+
 //cors middleware
 app.use(cors());
 
@@ -31,8 +41,7 @@ app.use(express.static(path.join(__dirname, 'clientSide')));
 
 app.use('/users',users);
 
-//body parser middleware
-app.use(bodyParser.json());  
+
 
 app.get('/', (req,res) =>{
     res.send('soufiane is here');
