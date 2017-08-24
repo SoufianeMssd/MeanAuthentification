@@ -21,8 +21,8 @@ const appRoutes: Routes = [
   {path:'', component : HomeComponent},
   {path:'register', component:RegisterComponent},
   {path:'login',component:LoginComponent},
-  {path:'profile',component:ProfileComponent},
-  {path:'dashboard',component:DashboardComponent}
+  {path:'profile',component:ProfileComponent,canActivate:[AuthService]},
+  {path:'dashboard',component:DashboardComponent,canActivate:[AuthService]}
 ]
 
 @NgModule({
